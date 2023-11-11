@@ -47,8 +47,30 @@ const addProductHandler = (event) => {
     shoppingCartArrey.forEach((product) => {
         shoppingCartHandler(product)
     })
+    totalPriceHandler(shoppingCartArrey)
+
 }
 
+
+const totalPriceHandler = (allProducts) => {
+    let totalPrice
+    if (allProducts.length == 1) {
+        totalPrice = (allProducts[0].price) * (allProducts[0].count)
+    } else {
+        let sum
+        totalPrice = allProducts.reduce((prev, current) => {
+            if (prev.price) {
+                sum = ((prev.price * prev.count) + (current.price * current.count))
+            } else {
+                sum = prev + (current.price * current.count)
+            }
+            return sum
+        })
+    }
+
+    allPrice.innerHTML = totalPrice.toFixed(2)
+
+}
 
 const createProductHandler=(product)=>{
     containerElem.insertAdjacentHTML("afterbegin", 
@@ -76,6 +98,15 @@ const createProductHandler=(product)=>{
 `)
 }
 
+const changeCountHandler = (event) => {
+    shoppingCartArrey.forEach((product) => {
+           if(product.title.search(event.target.id)==0){
+            product.count=event.target.value
+           }
+    })
+    totalPriceHandler(shoppingCartArrey)
+}
+
 const shoppingCartHandler=(product)=>{
     cartElem.insertAdjacentHTML("beforeend",
         `
@@ -94,7 +125,7 @@ const shoppingCartHandler=(product)=>{
         <div
             class="col-lg-2 col-sm-6 col-6 d-flex flex-row flex-lg-column flex-xl-row text-nowrap">
             <div class="">
-                <select style="width: 100px;" class="form-select me-4">
+                <select style="width: 100px;" class="form-select me-4" id=${product.title} onChange=changeCountHandler(event)>
                     <option>1</option>
                     <option>2</option>
                     <option>3</option>
@@ -102,7 +133,7 @@ const shoppingCartHandler=(product)=>{
                 </select>
             </div>
             <div class="">
-                <text class="h6">$1${product.price} </text> <br />
+                <text class="h6">$${product.price} </text> <br />
             </div>
         </div>
         <div
