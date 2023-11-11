@@ -35,6 +35,19 @@ let allProducts = [
 
 let containerElem=document.getElementById("allPro")
 let cartElem=document.getElementById("cart")
+let shoppingCartArrey = []
+
+
+
+
+const addProductHandler = (event) => {
+    cartElem.innerHTML = ''
+    let mainProduct = allProducts.find(product => product.id == event.target.id)
+    shoppingCartArrey.push(mainProduct)
+    shoppingCartArrey.forEach((product) => {
+        shoppingCartHandler(product)
+    })
+}
 
 
 const createProductHandler=(product)=>{
@@ -54,8 +67,8 @@ const createProductHandler=(product)=>{
         <div class="price-wrap mb-2">
             <strong class="">$ ${product.price}</strong>
         </div>
-        <div class="card-footer d-flex align-items-end pt-3 px-0 pb-0 mt-auto">
-            <a href="#" class="btn btn-outline-primary w-100">Add to cart</a>
+        <div class="card-footer d-flex align-items-end pt-3 px-0 pb-0 mt-auto" onClick=addProductHandler(event)>
+            <a id=${product.id} class="btn btn-outline-primary w-100">Add to cart</a>
         </div>
     </div>
 </div>
@@ -63,14 +76,14 @@ const createProductHandler=(product)=>{
 `)
 }
 
-const addProductHandler=(product)=>{
+const shoppingCartHandler=(product)=>{
     cartElem.insertAdjacentHTML("beforeend",
         `
         <div class="row gy-3 mb-4">
         <div class="col-lg-5">
             <div class="me-lg-5">
                 <div class="d-flex">
-                    <img src=${product.img[1]}
+                    <img src=${product.img[0]}
                         class="border rounded me-3" style="width: 96px; height: 96px;" />
                     <div class="">
                         <p class="text-muted">${product.title}</p>
@@ -109,6 +122,4 @@ const addProductHandler=(product)=>{
 allProducts.forEach((product)=>{
     createProductHandler(product)
 })
-allProducts.forEach((product)=>{
-    addProductHandler(product)
-})
+
