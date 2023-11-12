@@ -120,6 +120,7 @@ const shoppingCartHandler = (shoppingCartArrey) => {
 const totalPriceHandler = (shoppingCartArrey) => {
     let totalPrice
     if (shoppingCartArrey.length == 0) {
+        allPrice.innerHTML=0
         return false
     }
     else if (shoppingCartArrey.length == 1) {
