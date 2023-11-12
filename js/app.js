@@ -33,48 +33,14 @@ let allProducts = [
     },
 ]
 
-let containerElem=document.getElementById("allPro")
-let cartElem=document.getElementById("cart")
+let containerElem = document.getElementById("allPro")
+let cartElem = document.getElementById("cart")
 let shoppingCartArrey = []
 
 
-
-
-const addProductHandler = (event) => {
-    cartElem.innerHTML = ''
-    let mainProduct = allProducts.find(product => product.id == event.target.id)
-    shoppingCartArrey.push(mainProduct)
-    shoppingCartArrey.forEach((product) => {
-        shoppingCartHandler(product)
-    })
-    totalPriceHandler(shoppingCartArrey)
-
-}
-
-
-const totalPriceHandler = (allProducts) => {
-    let totalPrice
-    if (allProducts.length == 1) {
-        totalPrice = (allProducts[0].price) * (allProducts[0].count)
-    } else {
-        let sum
-        totalPrice = allProducts.reduce((prev, current) => {
-            if (prev.price) {
-                sum = ((prev.price * prev.count) + (current.price * current.count))
-            } else {
-                sum = prev + (current.price * current.count)
-            }
-            return sum
-        })
-    }
-
-    allPrice.innerHTML = totalPrice.toFixed(2)
-
-}
-
-const createProductHandler=(product)=>{
-    containerElem.insertAdjacentHTML("afterbegin", 
-`
+const createProductHandler = (product) => {
+    containerElem.insertAdjacentHTML("afterbegin",
+        `
 <div class="col-lg-3 col-md-6 col-sm-6">
 <div class="card px-4 border shadow-0 mb-4 mb-lg-0">
     <div class="mask px-2" style="height: 50px;">
@@ -90,26 +56,25 @@ const createProductHandler=(product)=>{
             <strong class="">$ ${product.price}</strong>
         </div>
         <div class="card-footer d-flex align-items-end pt-3 px-0 pb-0 mt-auto" onClick=addProductHandler(event)>
-            <a id=${product.id} class="btn btn-outline-primary w-100">Add to cart</a>
+            <a href="#!" id=${product.id} class="btn btn-outline-primary w-100">Add to cart</a>
         </div>
     </div>
 </div>
 </div>
 `)
 }
-
-const changeCountHandler = (event) => {
-    shoppingCartArrey.forEach((product) => {
-           if(product.title.search(event.target.id)==0){
-            product.count=event.target.value
-           }
-    })
+const addProductHandler = (event) => {
+    let mainProduct = allProducts.find(product => product.id == event.target.id)
+    shoppingCartArrey.push(mainProduct)
+    shoppingCartHandler(shoppingCartArrey)
     totalPriceHandler(shoppingCartArrey)
-}
 
-const shoppingCartHandler=(product)=>{
-    cartElem.insertAdjacentHTML("beforeend",
-        `
+}
+const shoppingCartHandler = (shoppingCartArrey) => {
+    cartElem.innerHTML = ''
+    shoppingCartArrey.forEach((product) => {
+        cartElem.insertAdjacentHTML("beforeend",
+            `
         <div class="row gy-3 mb-4">
         <div class="col-lg-5">
             <div class="me-lg-5">
@@ -141,16 +106,45 @@ const shoppingCartHandler=(product)=>{
             <div class="float-md-end">
                 <a href="#!" class="btn btn-light border px-2 icon-hover-primary"><i
                         class="fas fa-heart fa-lg px-1 text-secondary"></i></a>
-                <a href="#" class="btn btn-light border text-danger icon-hover-danger">
+                <a href="#!" class="btn btn-light border text-danger icon-hover-danger">
                     Remove</a>
             </div>
         </div>
     </div>
         `
-    )
+        )
+
+    })
+
+}
+const totalPriceHandler = (shoppingCartArrey) => {
+    let totalPrice
+    if (shoppingCartArrey.length == 1) {
+        totalPrice = (shoppingCartArrey[0].price) * (shoppingCartArrey[0].count)
+    } else {
+        let sum
+        totalPrice = shoppingCartArrey.reduce((prev, current) => {
+            if (prev.price) {
+                sum = ((prev.price * prev.count) + (current.price * current.count))
+            } else {
+                sum = prev + (current.price * current.count)
+            }
+            return sum
+        })
+    }
+    allPrice.innerHTML = totalPrice.toFixed(2)
+}
+const changeCountHandler = (event) => {
+    shoppingCartArrey.forEach((product) => {
+        if (product.title.search(event.target.id) == 0) {
+            product.count = event.target.value
+        }
+    })
+    totalPriceHandler(shoppingCartArrey)
 }
 
-allProducts.forEach((product)=>{
+
+allProducts.forEach((product) => {
     createProductHandler(product)
 })
 
