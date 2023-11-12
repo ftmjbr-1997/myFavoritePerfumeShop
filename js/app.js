@@ -106,7 +106,7 @@ const shoppingCartHandler = (shoppingCartArrey) => {
             <div class="float-md-end">
                 <a href="#!" class="btn btn-light border px-2 icon-hover-primary"><i
                         class="fas fa-heart fa-lg px-1 text-secondary"></i></a>
-                <a href="#!" class="btn btn-light border text-danger icon-hover-danger">
+                <a href="#!" class="btn btn-light border text-danger icon-hover-danger" id=${product.id} onClick=removeProductHandler(event)>
                     Remove</a>
             </div>
         </div>
@@ -119,7 +119,10 @@ const shoppingCartHandler = (shoppingCartArrey) => {
 }
 const totalPriceHandler = (shoppingCartArrey) => {
     let totalPrice
-    if (shoppingCartArrey.length == 1) {
+    if (shoppingCartArrey.length == 0) {
+        return false
+    }
+    else if (shoppingCartArrey.length == 1) {
         totalPrice = (shoppingCartArrey[0].price) * (shoppingCartArrey[0].count)
     } else {
         let sum
@@ -140,6 +143,11 @@ const changeCountHandler = (event) => {
             product.count = event.target.value
         }
     })
+    totalPriceHandler(shoppingCartArrey)
+}
+const removeProductHandler = (event) => {
+    shoppingCartArrey = shoppingCartArrey.filter(product => product.id != event.target.id)
+    shoppingCartHandler(shoppingCartArrey)
     totalPriceHandler(shoppingCartArrey)
 }
 
